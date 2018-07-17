@@ -1,0 +1,6 @@
+authors = ["Tamas K. Papp <tkpapp@gmail.com>"]
+name = "PackedASCII"
+uuid = "c9003420-89a5-11e8-2554-a57ca04f84ac"
+version = "0.1.0"
+
+[deps]
