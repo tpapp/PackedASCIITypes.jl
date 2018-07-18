@@ -123,7 +123,7 @@ function PackedASCII(s::String)
     elseif len ≤ 17
         PackedASCII17(s)
     else
-        throw(InexactError(PackedASCII, PackedASCIIString, s))
+        throw(InexactError(:PackedASCII, PackedASCII, s))
     end
 end
 

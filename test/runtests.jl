@@ -60,3 +60,8 @@ end
         @test hash(a, h) == hash(a2, h)
     end
 end
+
+@testset "constructors" begin
+    @test_throws InexactError PackedASCII("1"^18)
+    @test_throws InexactError PackedASCII("pillangó")
+end
