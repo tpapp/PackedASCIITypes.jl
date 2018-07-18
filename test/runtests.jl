@@ -14,7 +14,7 @@ using Test
         PackedASCII17("fourtytwo") ≡ PackedASCII("fourtytwo")
 end
 
-@test "small tests" begin
+@testset "small tests" begin
     for (T, l) in [(PackedASCII1, 1),
                    (PackedASCII2, 2),
                    (PackedASCII4, 4)]
