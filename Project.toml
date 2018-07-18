@@ -1,6 +1,7 @@
-authors = ["Tamas K. Papp <tkpapp@gmail.com>"]
-name = "PackedASCII"
+name = "PackedASCIITypes"
 uuid = "c9003420-89a5-11e8-2554-a57ca04f84ac"
+authors = ["Tamas K. Papp <tkpapp@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+ArgCheck = "dce04be8-c92d-5529-be00-80e4d2c0e197"
