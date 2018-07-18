@@ -4,7 +4,7 @@ module PackedASCIITypes
 export PackedASCII, @pasc_str
 
 using Base: StringVector
-import Base: length, ==, <, typemin, show, String, convert, promote_rule
+import Base: length, ==, hash, <, typemin, show, String, convert, promote_rule
 
 abstract type PackedASCII end
 
@@ -67,6 +67,8 @@ for (T, S, maxlen, lenbits) in [(PackedASCII1, UInt8, 1, 1),
         end
         _compose($T, s, len)
     end
+    @eval ($Tname)(p::$T) = p
+    @eval ($Tname)(p::PackedASCII) = convert($T, p)
     @eval function String(p::$T)
         len = length(p)
         sv = StringVector(len)
@@ -108,9 +110,6 @@ function (==)(p::PackedASCII, q::PackedASCII)
     lena == lenb && sa == sb
 end
 
-promote_rule(::Type{T}, ::Type{S}) where {T <: PackedASCII, S <: PackedASCII} =
-    maxlength(T) ≥ maxlength(S) ? T : S
-
 function PackedASCII(s::String)
     len = length(s)
     if len ≤ 1              # FIXME ugly implementation, worth code generation?
@@ -131,5 +130,10 @@ end
 macro pasc_str(str)
     PackedASCII(str)
 end
+
+promote_rule(::Type{T}, ::Type{S}) where {T <: PackedASCII, S <: PackedASCII} =
+    maxlength(T) ≥ maxlength(S) ? T : S
+
+(<)(a::PackedASCII, b::PackedASCII) = (<)(promote(a, b)...)
 
 end # module
