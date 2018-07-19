@@ -11,7 +11,7 @@ Julia package for representing short string-like objects in a fixed number of by
 
 When working with large datasets that have short string, it is sometimes advantageous to encode these strings in a memory-efficient way.
 
-A `<: PackedASCII` type packs short ASCII strings (of 7-bit characters) into blocks of 1, 2, 4, 8, or 16 bytes. Operations like `==`, `<`, `hash`, and conversions to and from `String` are defined, but a `<: PackedASCII` type is *neither a `<: AbstractString` nor an `<: AbstractVector`*, as accessing individual characters directly is suboptimal. Use these types for storage and comparison, and convert to a `String` for all other purposes.
+A `<: PackedASCII` type packs short ASCII strings (of 7-bit characters) into blocks of 1, 2, 4, 8, or 16 bytes. Operations like `==`, `<`, `hash`, and conversions to and from `String` are defined, but a `<: PackedASCII` type is **neither a `<: AbstractString` nor an `<: AbstractVector`**, as accessing individual characters directly is suboptimal. Use these types for storage and comparison, and convert to a `String` for all other purposes.
 
 ## Status and installation
 
