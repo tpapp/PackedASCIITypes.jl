@@ -65,3 +65,20 @@ end
     @test_throws InexactError PackedASCII("1"^18)
     @test_throws InexactError PackedASCII("pillangó")
 end
+
+@testset "I/O" begin
+    io = IOBuffer()
+    a = pasc1"a"
+    for T in first.(TYPEINFO)
+        write(io, T(a))
+    end
+    b = take!(io)
+    @test length(b) == 2^5-1
+    i = 0
+    for T in first.(TYPEINFO)
+        j = sizeof(T)
+        a2 = reinterpret(T, b[i.+(1:j)])[1]
+        @test T(a) ≡ a2::T
+        i += j
+    end
+end

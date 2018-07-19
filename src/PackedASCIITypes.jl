@@ -4,7 +4,8 @@ module PackedASCIITypes
 export PackedASCII, @pasc_str
 
 using Base: StringVector
-import Base: length, ==, hash, <, typemin, show, String, convert, promote_rule
+import Base:
+    length, ==, hash, <, typemin, show, String, convert, promote_rule, write
 
 abstract type PackedASCII end
 
@@ -100,6 +101,7 @@ for (T, S, maxlen, lenbits) in [(PackedASCII1, UInt8, 1, 1),
     @eval (<)(p::$T, q::$T) = reinterpret($S, p) < reinterpret($S, q)
     @eval typemin(::Type{$T}) = reinterpret($T, zero($S))
     @eval show(io::IO, p::$T) = print(io, "pasc$($(maxlen))\"", String(p), "\"")
+    @eval write(io::IO, p::$T) = write(io, reinterpret($S, p))
 end
 
 function convert(::Type{T}, p::S) where {T <: PackedASCII, S <: PackedASCII}
