@@ -15,7 +15,7 @@ primitive type PackedASCII8 <: PackedASCII 64 end
 primitive type PackedASCII17 <: PackedASCII 128 end
 
 """
-    maxlength(::Type{<:PackedASCIIString})
+    maxlength(::Type{<:PackedASCII})
 
 Maximum number of characters allowed by a type.
 """
@@ -39,6 +39,9 @@ for (T, S, maxlen, lenbits) in [(PackedASCII1, UInt8, 1, 1),
     @eval maxlength(::Type{$T}) = $maxlen
 
     # compose and decompose
+    #
+    # The decomposed representation is the character bits shifted to the right,
+    # and the length. These functions are used internally.
     @eval function _compose(::Type{$T}, s::$S, len::Integer)
         u = s << ($lenbits + 7 * ($maxlen - len))
         u |= $S(len)
@@ -110,20 +113,29 @@ function (==)(p::PackedASCII, q::PackedASCII)
     lena == lenb && sa == sb
 end
 
-function PackedASCII(s::String)
-    len = length(s)
-    if len ≤ 1              # FIXME ugly implementation, worth code generation?
-        PackedASCII1(s)
+"""
+    PackedASCII(str)
+
+Construct the shortest `PackedASCII` representation that can fit the string `str`.
+
+The maximum length is 17 characters, and the string has to be ASCII.
+
+See the `README.md` of the package for details.
+"""
+function PackedASCII(str::AbstractString)
+    len = length(str)
+    if len ≤ 1               # FIXME ugly implementation, worth code generation?
+        PackedASCII1(str)
     elseif len ≤ 2
-        PackedASCII2(s)
+        PackedASCII2(str)
     elseif len ≤ 4
-        PackedASCII4(s)
+        PackedASCII4(str)
     elseif len ≤ 8
-        PackedASCII8(s)
+        PackedASCII8(str)
     elseif len ≤ 17
-        PackedASCII17(s)
+        PackedASCII17(str)
     else
-        throw(InexactError(:PackedASCII, PackedASCII, s))
+        throw(InexactError(:PackedASCII, PackedASCII, str))
     end
 end
 
