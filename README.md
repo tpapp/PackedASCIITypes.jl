@@ -32,13 +32,13 @@ pasc2"AA"
 julia> pasc"AA" > pasc"A"              # very fast < and ==
 true
 
-julia> pasc"AA" == pasc8"AA"           # select representation
+julia> pasc8"AA"                       # select representation
+pasc8"AA"
+
+julia> PackedASCII("AA") == pasc"AA"   # constructor, representation by length
 true
 
-julia> PackedASCII("AA") == pasc"AA"   # constructor, automatic representation
-true
-
-julia> String(pasc"abc")
+julia> String(pasc"abc")               # conversion
 "abc"
 ```
 
